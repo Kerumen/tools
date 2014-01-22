@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+	printf '%s\n' "This script download a generic Makefile, create your 'auteur' file
+and create two directories ('srcs' & 'includes') in order to generate
+the directory of your current project"
+	printf '%s\n' "Usage:"
+	printf '%s\n' "-h (--help): display this help message."
+	printf '%s\n' "-l (--libft): clone a libft into your repository beside the other files."
+	printf '%s\n' "-p (--push): add, commit and push your repository to your git."
+else
+	printf '\n'
+	printf '\033[2;31m%s \033[2;35m\n\033[0m' "Initializing..."
+	printf '\033[2;31m%s \033[2;35m\n\033[0m' "---------------------------"
+
+	printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Downloading 'Makefile' from Github"
+	wget --quiet https://raw2.github.com/Kerumen/tools/master/Makefile
+
+	printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Creating 'auteur' file"
+	echo "ypringau" > auteur
+
+	printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Creating 'srcs' directory"
+	mkdir -p srcs
+
+	printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Creating 'includes' directory"
+	mkdir -p includes
+
+	if [ "$1" == "-l" ] || [ "$1" == "--libft" ]; then
+		printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Cloning libft from Github"
+		git clone https://github.com/Kerumen/libft.git libft
+		/bin/rm -rf ./libft/.git
+		/bin/rm ./libft/README.md
+		/bin/rm ./libft/.gitignore
+		printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Done"
+	fi
+
+	if [ "$1" == "-p" ] || [ "$1" == "--push" ]; then
+		printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Adding files to git"
+		git add .
+		printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Commiting changes to git"
+		git commit -m "Init"
+		printf '\033[1;32m%s \033[2;35m\n\033[0m' "-> Pushing to git"
+		git push origin master
+	fi
+
+	printf '\033[2;31m%s \033[1;35m\n\033[0m' "---------------------------"
+
+	printf '\n'
+fi
